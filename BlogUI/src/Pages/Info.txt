@@ -1,0 +1,6 @@
+In this project, the user will be able to login and log out
+Users who are not registered OR Not Signed In will be seeing a page called Not Users
+
+For The Frontend, we will import the package 'react-cookie' later on today
+
+admin
