@@ -1,33 +1,50 @@
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose') ;
-const UserRoute = require('./Routes/UserRoutes');
-const BlogRoute = require('./Routes/BlogRoutes');
-const dotenv = require('dotenv').config()
+const express = require("express");
+const cors = require("cors");
+const helmet = require("helmet");
+const morgan = require('morgan');
+const UserRoute = require("./Routes/UserRoutes");
+const BlogRoute = require("./Routes/BlogRoutes");
+const { Connect } = require("./helpers/db");
+require("dotenv").config();
+const GlobalHandler = require("./errors/GlobalHandler");
 
-const app = express()
-app.use(cors())
-app.use(express.json())
+const app = express();
+process.on("uncaughtException", (err)=>{
+    console.log(err.name, err.message);
+    console.log('Unhandled Exception, Shutting down server...');
+    process.exit(1);
+})
+app.use(cors());
+app.use(helmet());
+app.use(morgan('dev'));
+app.use(express.json());
 
 //MongoDb Database Connection
-async function connect(){
-    try {
-        await mongoose.connect(process.env.DB_URI)
-        console.log('Connected To Database')
-    } catch (error) {
-        console.error(error)
-    }
-}
 
-connect()
+app.use("/api/user", UserRoute);
+app.use("/api/blog", BlogRoute);
+app.all("*", (req, res, next) => {
+  next(
+    new AppError(
+      `Can not find ${req.originalUrl} with ${req.method} on this server`,
+      501
+    )
+  );
+});
+app.use(GlobalHandler);
 
+const Port = process.env.Port || 8080;
 
+Connect().then(() => {
+  app.listen(Port, () => {
+    console.log(`Server listening on Port ${Port}`);
+  });
+});
 
-app.use('/api/user', UserRoute )
-app.use('/api/blog', BlogRoute)
-
-const Port = process.env.Port || 8080
-
-app.listen(Port, ()=>{
-    console.log(`Server listening on Port ${Port}`)
+process.on("unhandledRejection", (err)=>{
+    console.log(err.name, err.message);
+    console.log("Unhandled Rejection, shutting down server...");
+    server.close(()=>{
+        process.exit(1);
+    })
 })

@@ -1,102 +1,84 @@
-const UserModel = require('../Models/UserModel')
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const dotenv = require('dotenv').config()
+const UserModel = require("../Models/UserModel");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const catchAsync = require("../errors/catchAsync");
+const AppError = require("../errors/AppError");
+const dotenv = require("dotenv").config();
 
 //Register Controller
-module.exports.Register = async (req, res) =>{
-    try {
-        const {firstName, lastName, userName, email, password} = req.body;
-        const user = await UserModel.findOne({email})
-        if (user) {
-           return res.status(401).json({message:'User Already Exist'})
-        //    .redirect('/login')
-        }
-        // console.log('Working Routes');
-        // console.log(password);
-        const salt = await bcrypt.genSalt(12);
-        const hashedPassword = await bcrypt.hash(password, salt)
-        // console.log(hashedPassword)
-        //Console.log the password
-        //  hashedPassword = bcrypt.hash(password, 16);
-        const newUser = new UserModel({firstName, lastName, userName, email, password:hashedPassword, Blog:[]})
-        await newUser.save()
-       return res.json({newUser})
-    } catch (error) {
-        console.log(error)
-    }
-}
+module.exports.Register = catchAsync(async (req, res, next) => {
+  const { firstName, lastName, userName, email, password } = req.body;
+  const user = await UserModel.findOne({ email });
+  if (user) {
+    return next(new AppError("User already exist", 401));
+  }
+
+  const salt = await bcrypt.genSalt(12);
+  const hashedPassword = await bcrypt.hash(password, salt);
+
+  const newUser = new UserModel({
+    firstName,
+    lastName,
+    userName,
+    email,
+    password: hashedPassword,
+    Blog: [],
+  });
+  await newUser.save();
+  return res.json({ status: "ok", message:"User registration succesfull" });
+});
 
 //Get ALL USERS
-exports.getAllUsers = async (req, res) => {
-    try {
-        const allUsers =await UserModel.find()
-        
-        if(!allUsers){
-            res.json({message:"No Users Found"})
-        }
-        res.status('200').json({allUsers})
-    } catch (error) {
-        console.error('Error Occured')
-    }
-}
-exports.singleUser =  async (req, res) => {
-    try {
-        const id = req.params.id;
-        const singleUser =await UserModel.findById(id).populate('blogs')
-        if(!singleUser){
-            console.log(singleUser)
-            res.json({message:"No User Found"})
-        }
-        res.status('200').json({singleUser})
-    } catch (error) {
-        console.error('Error Occured')
-    }
-}
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+  const allUsers = await UserModel.find();
+  if (!allUsers) {
+    return next(new AppError("No users found", 404));
+  }
+  res.status("200").json({ allUsers });
+});
+exports.singleUser = catchAsync(async (req, res, next) => {
+  const id = req.params.id;
+  const singleUser = await UserModel.findById(id).populate("blogs");
+  if (!singleUser) {
+    return next(new AppError("No user found", 404));
+  }
+  res.status("200").json({ singleUser });
+});
 
-//Login 
+//Login
 
-module.exports.Login = async (req, res) =>{
-    try {
-        const {email, password} = req.body
-        const user = await UserModel.findOne({email})
-        if (!user) {
-            return res.status(401).json({message:'User Does Not Exist'}).redirect('/register')
-        }
-        const isPasswordValid = await bcrypt.compare(password, user.password)
-        if (!isPasswordValid){
-            return  res.status(404).json({message:'Username Or Password Is Incorrect'})
-        }
-        const token = jwt.sign({id:user._id}, process.env.jwt_KEY)
-        res.json({token, userID:user._id})
-    } catch (error) {
-        console.log(error)
-    }
-}
+module.exports.Login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+  const user = await UserModel.findOne({ email });
+  if (!user) {
+    return next(new AppError("User does not exist", 401));
+  }
+  const isPasswordValid = await bcrypt.compare(password, user.password);
+  if (!isPasswordValid) {
+    return next(new AppError("Username or Password is incorrect", 404));
+  }
+  const token = jwt.sign({ id: user._id }, process.env.jwt_KEY);
+  res.json({ token, status:'ok', userID: user._id });
+});
 
 //Change UserName
 
-module.exports.changeUserName = async (req, res) =>{
-    
-    try{
-        const {userName, email, password, user} = req.body
-        console.log(userName, email, password, user)
-        const userExist = await UserModel.findOne({email})
-        if (!userExist){
-            return res.status(404).json({message:'User Does Not Exist'})
-        }
-        const isUserPasswordValid = await bcrypt.compare(password, userExist.password)
-        if (!isUserPasswordValid){
-            return  res.status(404).json({message:'Username Or Password Is Incorrect'})
-        }
-        const newDetails = await UserModel.findByIdAndUpdate(user, {
-            userName
-        })
-               console.log('Succesful')
-               await newDetails.save()
-               res.json({newDetails})
-
-        }catch(err){
-            console.log(err)
-        }
-}
+module.exports.changeUserName = catchAsync(async (req, res, next) => {
+  const { userName, email, password, user } = req.body;
+  const userExist = await UserModel.findOne({ email });
+  if (!userExist) {
+    return next(new AppError("User does not exist", 404));
+  }
+  const isUserPasswordValid = await bcrypt.compare(
+    password,
+    userExist.password
+  );
+  if (!isUserPasswordValid) {
+    return next(new AppError("Username or Password is incorrect", 404));
+  }
+  const newDetails = await UserModel.findByIdAndUpdate(user, {
+    userName,
+  });
+  await newDetails.save();
+  res.json({ newDetails });
+});

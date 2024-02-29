@@ -1,4 +1,4 @@
-import Logo from "../Assets/food9.png";
+import Logo from "../Assets/logo.png";
 import { Link } from "react-router-dom";
 import {
   AiOutlineBell,

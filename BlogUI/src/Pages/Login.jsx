@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import Food from "../Assets/food9.png";
+import logo from "../Assets/logo.png";
 import { Backend__Url } from "../Utils";
 import axios from "axios";
 import {useDispatch} from 'react-redux'
@@ -23,15 +24,15 @@ const Login = () => {
         email,
         password,
       });
-      
-      setCookies('access_token', res.data.token);
-     const userData = res.data.userID
-     console.log(userData)
-      alert("Login Succesfull! Enjoy!");
-      console.log(res)
-      dispatch(login())
-      navigate("/");
-      window.localStorage.setItem('UserID',userData);
+      if(res.data.status == "ok"){ 
+       setCookies('access_token', res.data.token);
+      const userData = res.data.userID
+       alert("Login Succesfull! Enjoy!");
+       dispatch(login())
+       navigate("/");
+       window.localStorage.setItem('UserID',userData);
+      }
+    
     } catch (error) {
       console.error(error);
     }
@@ -42,7 +43,7 @@ const Login = () => {
     <div className="Login">
       <div className="Register__section">
         <div className="Register__Image__Container">
-          <img src={Food} alt="" className="Register__image" />
+          <img src={logo} alt="" className="Register__image" />
         </div>
         <form
           action=""

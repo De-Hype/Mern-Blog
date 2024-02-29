@@ -1,19 +1,29 @@
 /*Components Utils Starts Here*/
+.Home{
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+   
+}
 .Header__logo{
     height: 70px;
-    width: 160px;
+    width: 120px;
 }
 
 /*Components Utils Ends Here*/
 /* Header Starts Here*/
 
 .Header{
+    overflow-x: hidden;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 17px;
+    padding: 10px 12px; 
     position: relative;
+    width: 100vw;
+    background-color: red;
 }
+
 .Header__navigation{
     display: flex;
     align-items: center;
@@ -58,7 +68,7 @@
     transition: all 500ms ease-in;
 }
 .mobile__screen__top{
-    padding: 1rem .6rem 0 ;
+    padding: 1rem 2rem 0 ;
     display: flex;
     justify-content: space-between;
     align-items: center;

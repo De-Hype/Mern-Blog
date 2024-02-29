@@ -43,6 +43,9 @@ box-shadow: 2px 5px 4px 5px rgb(8, 8, 58);
     align-items: center;
     width: 20rem;
 }
+.Register__image{
+    height: 100%;
+}
 .Register__inputs{
     display: flex;
     flex-direction: column;
