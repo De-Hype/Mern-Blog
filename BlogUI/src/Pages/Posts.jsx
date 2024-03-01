@@ -22,7 +22,7 @@ const Posts = () => {
   };
 
   useEffect(() => {
-    getBlogs().then((results)=> setText(results))
+    getBlogs().then((results)=> setText(results));
   }, []);
   
   return (
@@ -30,8 +30,9 @@ const Posts = () => {
       <div className="Posts">
         <Header />
         <div className="Posts__Div">
+          {text.length ==0 && (<><h3 className="">No Posts found</h3></>)}
           
-          {text.map((data, index) => (
+          {text.length > 0 && text.map((data, index) => (
             <div key={index} className="Posts__body">
             <img src={data.image.url} alt="" className="Posts__image" />
             <div className="Posts__texts">

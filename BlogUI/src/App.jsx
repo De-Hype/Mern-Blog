@@ -18,7 +18,7 @@ import Update from "./Pages/Update";
 
 const App = React.memo(() => {
   const { isLoggedIn } = useSelector((state) => state.Auth);
-  console.log(isLoggedIn);
+  
   return (
     <div className="App">
       <BrowserRouter>

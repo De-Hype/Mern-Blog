@@ -21,11 +21,13 @@ const MyPost = () => {
       .get(`${Backend__Url}/api/user/single-user/${id}`)
       .catch((err) => console.error(err));
     const results = await res.data.singleUser.blogs;
+
     return results;
   };
 
   useEffect(() => {
     getMyPost().then((results) => setMyText(results));
+    
   }, []);
 
   return (
@@ -33,7 +35,8 @@ const MyPost = () => {
       <div className="Posts">
         <Header />
         <div className="Posts__Div">
-          {myText.map((data, index) => (
+        {myText.length ==0 && (<><h3 className="">No Posts found</h3></>)}
+          {myText.length > 0 && myText.map((data, index) => (
             <BlogCards
               key={index}
               id={data._id}
