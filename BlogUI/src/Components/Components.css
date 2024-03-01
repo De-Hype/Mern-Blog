@@ -21,7 +21,6 @@
     padding: 10px 12px; 
     position: relative;
     width: 100vw;
-    background-color: red;
 }
 
 .Header__navigation{
@@ -200,8 +199,9 @@
     display: flex;
 }
 .HeroFeaturedPost__FIRST{
-    max-width: 360px;
-    width: 40rem;
+    padding-right:8px;
+    /* max-width: 360px;
+    width: 40rem; */
     /* border: 1px solid green; */
 }
 .HeroFeaturedPost__First__image{
@@ -216,17 +216,15 @@
 .HeroFeaturedPost__First__title__image{
     display: flex;
     align-items: center;
-    max-width: 360px;
-    width: 40rem;
+    /* max-width: 360px;
+    width: 40rem; */
     /* border: 1px solid green; */
 }
 .HeroFeaturedPost__First__text{
-    
-    width: 38rem;
+    width: 100%;
     margin-top: 1rem;
     font-size: .9rem;
-    max-width: 360px;
-
+   
     line-height: 1.3;
     word-spacing: .1rem;
     letter-spacing: .09rem;
@@ -254,11 +252,11 @@
 .HeroFeaturedPost__SECOND__images{
     /* height: 150px; */
     width: 150px;
-    height: 180px;
+    height: 100%;
 }
 .HeroFeaturedPost__SECOND__BOXES{
     display: flex;
-    height: 160px;
+    /* height: 160px; */
     /* border: 1px solid green; */
 
 }
@@ -275,7 +273,7 @@
     color: white;
     cursor: pointer;
     width: 5.4rem;
-    padding: 5px 0 5px 10px;
+    padding: 5px 3px 5px 10px;
     margin-top: 5px;
 }
 .HeroRecentPost__paragraphs{
@@ -486,6 +484,42 @@ footer{
     border: none;
     outline: none;
     cursor: pointer;
+}
+@media screen and (max-width:500px) {
+    .HeroFeaturedPost__SECOND__BOXES{ 
+        display: grid; 
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        width: 100%;
+    }
+    .HeroFeaturedPost__SECOND__images{ 
+        width: 100%;
+        height: 150px;
+    }
+    .HeroFeaturedPost__SECOND__BOXES__CONTENT{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        margin-left: 9px;
+        font-size: 15px;
+    }
+    .HeroFeaturedPost__SECOND__read__more{
+        text-align: center;
+        background: #000;
+        
+        align-self: center;
+    }
+    .HeroFeaturedPost__First__title__image{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        /* border: 1px solid green; */
+    }
+    .HeroFeaturedPost__First__main__title{
+        font-size: 1.2rem;
+    }
+    
 }
 /*Profile Components Ends Here*/
 

@@ -1,5 +1,4 @@
 import NoHeader from "../Components/NoHeader";
-
 import { Link } from "react-router-dom";
 
 const NotUser = () => {
@@ -16,9 +15,7 @@ const NotUser = () => {
            <Link className="NotUser__links" to='/login'> Log In</Link>
         </h5>
       </div>
-      {/* I Will Be Adding A Little Dramatic Sticking Right Here And It Will Be
-      Shaking After Every half A SECOND */}
-      <img src="" alt="" className="NotUser__image" />
+     
     </div>
       </>
   );
