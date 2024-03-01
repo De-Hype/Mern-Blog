@@ -200,10 +200,11 @@
 }
 .HeroFeaturedPost__FIRST{
     padding-right:8px;
-    /* max-width: 360px;
-    width: 40rem; */
+    max-width: 360px;
+    width: 40rem;
     /* border: 1px solid green; */
 }
+
 .HeroFeaturedPost__First__image{
     height: 70px;
     width: 90px;
@@ -484,6 +485,14 @@ footer{
     border: none;
     outline: none;
     cursor: pointer;
+}
+@media screen and (max-width:1020px){
+    .HeroFeaturedPost__FIRST{
+        padding-right:8px;
+        max-width: 100%;
+        width: 100%;
+        /* border: 1px solid green; */
+    }
 }
 @media screen and (max-width:500px) {
     .HeroFeaturedPost__SECOND__BOXES{ 
