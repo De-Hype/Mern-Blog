@@ -1,1 +1,1 @@
-export const Backend__Url = 'http://localhost:8080';
+export const Backend__Url = 'https://mern-blog-fycp.onrender.com';

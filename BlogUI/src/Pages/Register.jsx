@@ -25,9 +25,12 @@ const Register = () => {
       if(result.data.status == 'ok'){
           alert("Registration Succesfull! Now Login");
       navigate("/login");
+      } else{
+        alert("Invalid username or password")
       }
 
     } catch (error) {
+      alert("Error occured while logging in")
       console.error(error);
     }
   };

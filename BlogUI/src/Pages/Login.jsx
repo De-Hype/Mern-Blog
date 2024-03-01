@@ -31,10 +31,12 @@ const Login = () => {
        dispatch(login())
        navigate("/");
        window.localStorage.setItem('UserID',userData);
+      } else{
+        alert("Incorrect username or password")
       }
-    
     } catch (error) {
       console.error(error);
+      alert("Error occured while logging in");
     }
     //We Will Import A Hook Called react-cookie
     // console.log(res);
